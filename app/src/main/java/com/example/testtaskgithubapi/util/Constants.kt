@@ -7,4 +7,8 @@ object Constants {
     const val GITHUB_DATABASE_DB = "github_database.db"
 
     const val PREFERENCES_NAME = "user_preferences"
+
+
+    const val HOST = "api.github.com"
+    const val SEARCH = "/search/users"
 }

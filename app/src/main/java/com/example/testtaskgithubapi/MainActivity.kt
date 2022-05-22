@@ -7,12 +7,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.testtaskgithubapi.core.DispatchersProvider
 import com.example.testtaskgithubapi.navigation.Screen
-import com.example.testtaskgithubapi.presentation.home.HomeScreen
+import com.example.testtaskgithubapi.presentation.search.Search
+import com.example.testtaskgithubapi.presentation.search.SearchViewModel
 import com.example.testtaskgithubapi.presentation.splash.SplashScreen
 import com.example.testtaskgithubapi.ui.theme.BlackBackground
 import com.example.testtaskgithubapi.ui.theme.TestTaskGithubAPITheme
@@ -71,7 +73,7 @@ fun MyApp(window: Window, dispatchers: DispatchersProvider) {
             SplashScreen (navController = navController)
         }
 
-        composable(Screen.Home.route) {
+        composable(Screen.Search.route) {
             if(!isSystemInDarkTheme()) {
                 OnDestinationChanged(
                     systemUiController = systemUiController,
@@ -89,7 +91,9 @@ fun MyApp(window: Window, dispatchers: DispatchersProvider) {
                 )
             }
 
-            HomeScreen(navController = navController)
+            val searchViewModel = hiltViewModel<SearchViewModel>()
+
+            Search(viewModel = searchViewModel, dispatchers = dispatchers)
         }
     }
 

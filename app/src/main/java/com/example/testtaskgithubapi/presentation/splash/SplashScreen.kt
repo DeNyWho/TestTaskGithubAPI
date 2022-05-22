@@ -25,7 +25,7 @@ fun SplashScreen(
 ) {
     LaunchedEffect(Unit){
         delay(2000)
-        navController.navigate(Screen.Home.route)
+        navController.navigate(Screen.Search.route)
     }
     if(isSystemInDarkTheme()){
         Column(

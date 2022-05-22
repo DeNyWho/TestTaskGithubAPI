@@ -3,6 +3,7 @@ package com.example.testtaskgithubapi.core
 import com.example.testtaskgithubapi.core.error.GeneralError
 import com.example.testtaskgithubapi.core.exception.MyError
 import com.example.testtaskgithubapi.core.wrapper.Resource
+import dagger.Provides
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.*

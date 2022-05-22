@@ -5,6 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.testtaskgithubapi.core.DefaultDispatchers
 import com.example.testtaskgithubapi.core.DispatchersProvider
+import com.example.testtaskgithubapi.core.SafeCall
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -87,6 +88,12 @@ object NetworkModule {
                 level = LogLevel.HEADERS
             }
         }
+    }
+
+    @Provides
+    @Singleton
+    fun provideCall(): SafeCall {
+        return SafeCall()
     }
 }
 
