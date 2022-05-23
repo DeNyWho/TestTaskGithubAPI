@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
+import java.util.*
+import java.util.Collections.addAll
 import javax.inject.Inject
 
 class SearchContentUseCase @Inject constructor(
@@ -38,4 +40,6 @@ class SearchContentUseCase @Inject constructor(
             emit(state)
         }.flowOn(dispatchers.io)
     }
+
+
 }

@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
+import java.util.Collections.addAll
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,11 +36,19 @@ class SearchViewModel @Inject constructor(
             }.launchIn(viewModelScope)
         } else {
             Timber.d("search query must longer")
-            currentPage = 1
             _contentSearchState.value =
                 ContentSearchState(error = Event("Search query must be at least 3 characters long"))
         }
     }
+
+//    fun getNextPage(query: String){
+//        if (query.length >= 3) {
+//            searchUseCase(query, currentPage).onEach { res ->
+//                _contentSearchState.value.apply { addAll(res.data) }
+//                if (res.error.peekContent() != null) currentPage = 2
+//            }.launchIn(viewModelScope)
+//        }
+//    }
 
     fun nextContentPageByQuery(query: String) {
         if (contentSearchState.value.data.isEmpty()) {
@@ -47,6 +56,7 @@ class SearchViewModel @Inject constructor(
         }
 
         if (query.length >= 3) {
+            currentPage++
             searchUseCase(query, currentPage).onEach { res ->
 
                 if (res.isLoading) {
@@ -56,8 +66,9 @@ class SearchViewModel @Inject constructor(
                         currentPage++
                         val temp = _contentSearchState.value.data.toMutableList()
                         temp.addAll(res.data)
-                        _contentSearchState.value = ContentSearchState(temp)
+                        _contentSearchState.value.data.apply { addAll(res.data.toMutableList())}
                     } else {
+                        Timber.d("TIMBER ELSE TIMBER")
                         _contentSearchState.value = _contentSearchState.value.copy(error = res.error)
                     }
                 }

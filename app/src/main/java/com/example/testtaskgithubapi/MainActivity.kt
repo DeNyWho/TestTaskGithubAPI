@@ -16,8 +16,7 @@ import com.example.testtaskgithubapi.navigation.Screen
 import com.example.testtaskgithubapi.presentation.search.Search
 import com.example.testtaskgithubapi.presentation.search.SearchViewModel
 import com.example.testtaskgithubapi.presentation.splash.SplashScreen
-import com.example.testtaskgithubapi.ui.theme.BlackBackground
-import com.example.testtaskgithubapi.ui.theme.TestTaskGithubAPITheme
+import com.example.testtaskgithubapi.ui.theme.*
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,7 +84,7 @@ fun MyApp(window: Window, dispatchers: DispatchersProvider) {
             else {
                 OnDestinationChanged(
                     systemUiController = systemUiController,
-                    color = BlackBackground,
+                    color = blackestBack,
                     drawOverStatusBar = false,
                     window = window
                 )

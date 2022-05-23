@@ -100,11 +100,11 @@ fun Search(
                 state = contentSearchState
             )
 
-
+            Timber.d("TIMBER = TIMBEr")
 
             if (listState.isScrolledToTheEnd()) {
                 LaunchedEffect(searchQuery.value) {
-                    Timber.d("query next page with $searchQuery.value")
+                    Timber.i("query next page with $searchQuery.value")
                     viewModel.nextContentPageByQuery(searchQuery.value)
                 }
             }

@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.testtaskgithubapi.presentation.search.composable.ItemSearchShimmer
 import com.example.testtaskgithubapi.presentation.search.composable.ItemUserSearch
 import com.example.testtaskgithubapi.presentation.search.state.ContentSearchState
 import com.example.testtaskgithubapi.ui.theme.OnDarkSurface
@@ -47,11 +48,11 @@ fun ContentSearchList(
             )
         }
 
-//        if (state.isLoading) {
-//            items(14) {
-////                ItemSearchShimmer(shimmerInstance)
-//            }
-//        }
+        if (state.isLoading) {
+            items(10) {
+                ItemSearchShimmer(shimmerInstance)
+            }
+        }
 
         val error = state.error.peekContent()
         if (error != null) {
