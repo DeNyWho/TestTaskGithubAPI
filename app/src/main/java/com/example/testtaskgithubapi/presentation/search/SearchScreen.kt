@@ -1,33 +1,31 @@
 package com.example.testtaskgithubapi.presentation.search
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.testtaskgithubapi.core.DispatchersProvider
-import com.example.testtaskgithubapi.core.enum.ContentType
 import com.example.testtaskgithubapi.presentation.search.composable.CustomTextField
 import com.example.testtaskgithubapi.presentation.search.composable.SearchEditText
 import com.example.testtaskgithubapi.presentation.search.composable.SearchLeadingIcon
 import com.example.testtaskgithubapi.presentation.search.composable.SearchTrailingIcon
 import com.example.testtaskgithubapi.ui.theme.BlackBackground
-import com.example.testtaskgithubapi.ui.theme.Grey
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Search(
     viewModel: SearchViewModel,
@@ -41,6 +39,7 @@ fun Search(
 
     LaunchedEffect(key1 = viewModel.hashCode()) {
         focusRequester.requestFocus()
+
     }
     val contentSearchState = viewModel.contentSearchState.value
 
@@ -63,7 +62,7 @@ fun Search(
                     content = {
                         SearchEditText(
                             value = searchQuery.value,
-                            placeholder = "Try 'Denywho'",
+                            placeholder = "Try Denywho",
                             focusRequester = focusRequester,
                             onValueChange = {
                                 searchQuery.value = it
@@ -94,18 +93,32 @@ fun Search(
             BackHandler(enabled = (searchQuery.value.isNotEmpty())) {
                 searchQuery.value = ""
             }
+            val users by viewModel.userList.observeAsState()
 
-            ContentSearchList(
-                listState = listState,
-                state = contentSearchState
-            )
+            val list = users.orEmpty()
+            Timber.d("list = $list")
 
-            Timber.d("TIMBER = TIMBEr")
+//            if(contentSearchState.data.isEmpty()) {
+                ContentSearchList(
+                    listState = listState,
+                    state = contentSearchState,
+                    searchQuery = searchQuery.value
+                )
+//            } else {
+//                Timber.d("list = $list")
+//                ContentSearchLocal(
+//                    listState = listState,
+//                    searchQuery = searchQuery.value,
+//                    users = list
+//                )
+//            }
+
+
 
             if (listState.isScrolledToTheEnd()) {
                 LaunchedEffect(searchQuery.value) {
                     Timber.i("query next page with $searchQuery.value")
-                    viewModel.nextContentPageByQuery(searchQuery.value)
+                    viewModel.getNextPage(searchQuery.value)
                 }
             }
         }

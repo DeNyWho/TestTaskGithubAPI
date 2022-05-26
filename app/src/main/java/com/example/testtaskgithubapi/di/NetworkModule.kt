@@ -95,28 +95,8 @@ object NetworkModule {
     fun provideCall(): SafeCall {
         return SafeCall()
     }
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

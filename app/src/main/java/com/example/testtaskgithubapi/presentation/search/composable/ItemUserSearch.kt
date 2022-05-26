@@ -42,11 +42,11 @@ fun ItemUserSearch(
             modifier = Modifier.size(64.dp)
         ) {
             if (painter.state is AsyncImagePainter.State.Loading) {
-//                CenterCircularProgressIndicator(
-//                    strokeWidth = 2.dp,
-//                    size = 20.dp,
-//                    color = MyColor.Yellow500
-//                )
+                CenterCircularProgressIndicator(
+                    strokeWidth = 2.dp,
+                    size = 20.dp,
+                    color = Color.Red
+                )
             }
             Image(
                 painter = painter,

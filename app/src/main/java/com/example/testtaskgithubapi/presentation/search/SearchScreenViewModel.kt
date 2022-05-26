@@ -3,27 +3,38 @@ package com.example.testtaskgithubapi.presentation.search
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.testtaskgithubapi.core.wrapper.Event
+import com.example.testtaskgithubapi.data.repository.Remote
+import com.example.testtaskgithubapi.domain.models.ContentSearch
 import com.example.testtaskgithubapi.domain.use_cases.search.SearchContentUseCase
 import com.example.testtaskgithubapi.presentation.search.state.ContentSearchState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
-import java.util.Collections.addAll
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchUseCase: SearchContentUseCase
+    private val searchUseCase: SearchContentUseCase,
+    private val remote: Remote
 ): ViewModel() {
-
 
     private val _contentSearchState: MutableState<ContentSearchState> =
         mutableStateOf(ContentSearchState())
     val contentSearchState: State<ContentSearchState> = _contentSearchState
+
+//    fun setUsers(users: List<ContentSearch>){
+//        viewModelScope.launch {
+//            remote.updateUsers(users)
+//        }
+//    }
+
+    val userList: LiveData<List<ContentSearch>> = remote.getAllUsers().asLiveData()
 
 
     private var currentPage = 1
@@ -41,37 +52,15 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-//    fun getNextPage(query: String){
-//        if (query.length >= 3) {
-//            searchUseCase(query, currentPage).onEach { res ->
-//                _contentSearchState.value.apply { addAll(res.data) }
-//                if (res.error.peekContent() != null) currentPage = 2
-//            }.launchIn(viewModelScope)
-//        }
-//    }
 
-    fun nextContentPageByQuery(query: String) {
-        if (contentSearchState.value.data.isEmpty()) {
-            return
-        }
-
+    fun getNextPage(query: String){
         if (query.length >= 3) {
             currentPage++
             searchUseCase(query, currentPage).onEach { res ->
-
-                if (res.isLoading) {
-                    _contentSearchState.value = _contentSearchState.value.copy(isLoading = true)
-                } else if (!res.isLoading) {
-                    if (res.error.peekContent() != null) {
-                        currentPage++
-                        val temp = _contentSearchState.value.data.toMutableList()
-                        temp.addAll(res.data)
-                        _contentSearchState.value.data.apply { addAll(res.data.toMutableList())}
-                    } else {
-                        Timber.d("TIMBER ELSE TIMBER")
-                        _contentSearchState.value = _contentSearchState.value.copy(error = res.error)
-                    }
-                }
+                val temp = _contentSearchState.value.data.toMutableList()
+                temp.addAll(res.data)
+                _contentSearchState.value.data = temp
+                if (res.error.peekContent() != null) currentPage = 2
             }.launchIn(viewModelScope)
         }
     }

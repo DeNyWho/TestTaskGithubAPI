@@ -12,8 +12,5 @@ data class User(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val avatarURL: String,
-    val url: String,
-    val name: String,
-    val company: String,
-    val location: String
+    val type: String,
 )

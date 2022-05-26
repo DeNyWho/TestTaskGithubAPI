@@ -1,12 +1,14 @@
 package com.example.testtaskgithubapi.domain.models
 
-import android.os.Parcelable
+import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
+import com.example.testtaskgithubapi.util.Constants
 
+@Entity(tableName = Constants.CONTENT_SEARCH_TABLE)
 data class ContentSearch(
     /*  User  */
     val login: String,
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val avatarURL: String,
     val type: String,

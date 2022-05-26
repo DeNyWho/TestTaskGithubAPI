@@ -18,6 +18,7 @@ import javax.inject.Singleton
 class Repository @Inject constructor(
     @AndroidKtorClient private val client: HttpClient,
     private val safeCall: SafeCall
+
 ): UserService {
     override suspend fun searchUser(query: String, page: Int): Resource<ContentSearchResponse> {
         val request = HttpRequestBuilder().apply {

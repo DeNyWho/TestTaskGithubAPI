@@ -25,9 +25,11 @@ import com.valentinilk.shimmer.unclippedBoundsInWindow
 @Composable
 fun ContentSearchList(
     listState: LazyListState,
-    state: ContentSearchState
+    state: ContentSearchState = ContentSearchState(),
+    searchQuery: String
 ) {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Custom)
+
 
     LazyColumn(
         state = listState,
@@ -37,16 +39,20 @@ fun ContentSearchList(
             shimmerInstance.updateBounds(position)
         }
     ) {
+
         itemsIndexed(state.data, key = { index, data ->
             "${data.id}-$index"
         }) { _, data ->
-            ItemUserSearch(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp, 8.dp),
-                data = data
-            )
+            if (data.login.contains(searchQuery))
+                ItemUserSearch(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp, 8.dp),
+                    data = data
+                )
         }
+
+
 
         if (state.isLoading) {
             items(10) {

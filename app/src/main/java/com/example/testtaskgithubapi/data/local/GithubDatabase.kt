@@ -6,10 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.testtaskgithubapi.data.local.dao.UserDao
+import com.example.testtaskgithubapi.domain.models.ContentSearch
 import com.example.testtaskgithubapi.domain.models.user.User
 import com.example.testtaskgithubapi.util.Constants.GITHUB_DATABASE_DB
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, ContentSearch::class] , version = 1)
 @TypeConverters(DatabaseConverter::class)
 abstract class GithubDatabase: RoomDatabase() {
 
@@ -23,6 +24,7 @@ abstract class GithubDatabase: RoomDatabase() {
             }
             return databaseBuilder
                 .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
                 .build()
         }
     }

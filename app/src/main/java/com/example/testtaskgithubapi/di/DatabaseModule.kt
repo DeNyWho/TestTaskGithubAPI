@@ -33,5 +33,4 @@ object DataBaseModule {
     fun provideUserDao(
         githubDatabase: GithubDatabase
     ) = githubDatabase.userDao()
-
 }
